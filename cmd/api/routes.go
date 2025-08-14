@@ -18,5 +18,13 @@ func (app *application) routes() http.Handler {
 		v1.DELETE("/events/:id", app.deleteEvent)
 	}
 
+	authGroup := v1.Group("/")
+	authGroup.Use(app.AuthMiddleware())
+	{
+		authGroup.POST("/events", app.createEvent)
+		authGroup.PUT("/events/:id", app.updateEvent)
+		authGroup.DELETE("/events/:id", app.deleteEvent)
+	}
+
 	return g
 }
